@@ -1,6 +1,6 @@
 import streamlit as st
 import pickle
-import numpy as np
+import pandas as pd
 
 # load model
 model = pickle.load(open("model.pkl", "rb"))
@@ -42,10 +42,23 @@ unfurnished = 1 if furnishing == "unfurnished" else 0
 
 # prediction
 if st.button("Predict"):
-    input_data = np.array([[area, bedrooms, bathrooms, stories, parking,
-                            mainroad, guestroom, basement, hotwaterheating,
-                            airconditioning, prefarea,
-                            semi_furnished, unfurnished]])
+
+    # create dataframe with correct column names
+    input_data = pd.DataFrame([{
+        "area": area,
+        "bedrooms": bedrooms,
+        "bathrooms": bathrooms,
+        "stories": stories,
+        "mainroad": mainroad,
+        "guestroom": guestroom,
+        "basement": basement,
+        "hotwaterheating": hotwaterheating,
+        "airconditioning": airconditioning,
+        "parking": parking,
+        "prefarea": prefarea,
+        "furnishingstatus_semi-furnished": semi_furnished,
+        "furnishingstatus_unfurnished": unfurnished
+    }])
 
     prediction = model.predict(input_data)[0]
 
